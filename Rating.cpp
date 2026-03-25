@@ -27,9 +27,9 @@ double Rating::getScore() const {
 }
 
 void Rating::display() const {
-    std::cout << "User ID: " << userId
-          << ", Movie ID: " << movieId
-          << ", rating: ";
+    std::cout << "사용자 ID: " << userId
+          << ", 영화 ID: " << movieId
+          << ", 평점: ";
 
     if (score == -1.0) {
         std::cout << "잘못된 입력값";
