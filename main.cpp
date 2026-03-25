@@ -21,17 +21,17 @@ int main() {
     
     
     ratings.push_back(Rating("karina1", 4, 4.8)); 
-    ratings.push_back(Rating("winter2", 2, 4.9));
+    ratings.push_back(Rating("winter2", 2, 0.0));
     ratings.push_back(Rating("jiselle3", 1, 5.0));
     ratings.push_back(Rating("ningning4", 3, 4.7));
     ratings.push_back(Rating("karina1", 3, 6.0));
-    ratings.push_back(Rating("winter2", 3, 4.6));
     ratings.push_back(Rating("karina1", 4, 4.3));
     ratings.push_back(Rating("ningning4", 3, -1.0));
+    ratings.push_back(Rating("jiselle3", 2, 4.5));
 
 
     for (int i = 0; i < (int)ratings.size(); i++) {
-        if (ratings[i].getScore() == 0.0) continue;
+        if (ratings[i].getScore() == -1.0) continue;
 
         for (int j = 0; j < (int)movies.size(); j++) {
             if (movies[j].getId() == ratings[i].getMovieId()) {
@@ -41,19 +41,19 @@ int main() {
         }
     }
 
-    std::cout << "=== Movie List ===" << std::endl;
+    std::cout << "=== 영화 목록 ===" << std::endl;
     for (int i = 0; i < (int)movies.size(); i++) {
         movies[i].display();
     }
 
     std::cout << std::endl;
-    std::cout << "=== User List ===" << std::endl;
+    std::cout << "=== 사용자 목록 ===" << std::endl;
     for (int i = 0; i < (int)users.size(); i++) {
         users[i].display();
     }
 
     std::cout << std::endl;
-    std::cout << "=== Rating List ===" << std::endl;
+    std::cout << "=== 평점 목록 ===" << std::endl;
     for (int i = 0; i < (int)ratings.size(); i++) {
         ratings[i].display();
     }

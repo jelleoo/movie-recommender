@@ -5,10 +5,10 @@ Rating::Rating()
     : userId(""), movieId(0), score(0.0) {}
 
 Rating::Rating(const std::string& userId,
-               int movieId, double scoreInput)
+               int movieId, double scoreInput) 
     : userId(userId), movieId(movieId) {
     if (scoreInput < 0.0 || scoreInput > 5.0) {
-        score = 0.0;
+        score = -1.0;
     } else {
         score = scoreInput;
     }
@@ -28,7 +28,14 @@ double Rating::getScore() const {
 
 void Rating::display() const {
     std::cout << "User ID: " << userId
-              << ", Movie ID: " << movieId
-              << ", Score: " << score
-              << std::endl;
+          << ", Movie ID: " << movieId
+          << ", rating: ";
+
+    if (score == -1.0) {
+        std::cout << "잘못된 입력값";
+    } else {
+        std::cout << score;
+    }
+    
+    std::cout << std::endl;
 }

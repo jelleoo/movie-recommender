@@ -22,8 +22,8 @@ std::string User::getEmail() const {
 }
 
 void User::display() const {
-    std::cout << "User ID: " << id
-              << ", Name: " << name
-              << ", Email: " << email
+    std::cout << "사용자 ID: " << id
+              << ", 이름: " << name
+              << ", 이메일: " << email
               << std::endl;
 }
