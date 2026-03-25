@@ -30,32 +30,32 @@ int main() {
     ratings.push_back(Rating("jiselle3", 2, 4.5));
 
 
-    for (int i = 0; i < (int)ratings.size(); i++) {
-        if (ratings[i].getScore() == -1.0) continue;
+    for (const Rating& r : ratings) {
+        if (r.getScore() == -1.0) continue;
 
-        for (int j = 0; j < (int)movies.size(); j++) {
-            if (movies[j].getId() == ratings[i].getMovieId()) {
-                movies[j].addRating(ratings[i].getScore());
+        for (Movie& m : movies) {
+            if (m.getId() == r.getMovieId()) {
+                m.addRating(r.getScore());
                 break;
             }
         }
     }
 
     std::cout << "=== 영화 목록 ===" << std::endl;
-    for (int i = 0; i < (int)movies.size(); i++) {
-        movies[i].display();
+    for (const Movie& m : movies) {
+        m.display();
     }
 
     std::cout << std::endl;
     std::cout << "=== 사용자 목록 ===" << std::endl;
-    for (int i = 0; i < (int)users.size(); i++) {
-        users[i].display();
+    for (const User& u : users) {
+        u.display();
     }
 
     std::cout << std::endl;
     std::cout << "=== 평점 목록 ===" << std::endl;
-    for (int i = 0; i < (int)ratings.size(); i++) {
-        ratings[i].display();
+    for (const Rating& r : ratings) {
+        r.display();
     }
 
 
