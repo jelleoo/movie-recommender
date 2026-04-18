@@ -50,3 +50,39 @@ void Movie::display() const {
               << " (" << ratingCount << "건)"
               << std::endl;
 }
+
+bool Movie::operator==(const Movie& o) const {
+    return title == o.title && releaseYear == o.releaseYear;
+}
+
+bool Movie::operator!=(const Movie& o) const {
+    return !(*this == o);
+}
+
+bool Movie::operator<(const Movie& o) const {
+    if (getAverageRating() != o.getAverageRating()) {
+        return getAverageRating() < o.getAverageRating();
+    }
+    return title < o.title;
+}
+
+bool Movie::operator>(const Movie& o) const {
+    return o < *this;
+}
+
+bool Movie::operator<=(const Movie& o) const {
+    return !(o < *this);
+}
+
+bool Movie::operator>=(const Movie& o) const {
+    return !(*this < o);
+}
+
+std::ostream& operator<<(std::ostream& os, const Movie& m) {
+    os << m.id << ". " << m.title
+       << " (" << m.releaseYear << ")"
+       << " [" << m.genre << "]"
+       << "  평점: " << m.getAverageRating()
+       << " (" << m.ratingCount << "건)";
+    return os;
+}

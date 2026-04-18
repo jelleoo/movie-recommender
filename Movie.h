@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <iostream>
 
 class Movie {
 private:
@@ -24,4 +25,13 @@ public:
 
     void addRating(double r);
     void display() const;
+
+    bool operator==(const Movie& o) const;
+    bool operator!=(const Movie& o) const;
+    bool operator<(const Movie& o) const;
+    bool operator>(const Movie& o) const;
+    bool operator<=(const Movie& o) const;
+    bool operator>=(const Movie& o) const;
+
+    friend std::ostream& operator<<(std::ostream& os, const Movie& m);
 };
