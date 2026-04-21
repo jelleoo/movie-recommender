@@ -1,12 +1,12 @@
 CXX      = g++
 CXXFLAGS = -std=c++17 -Wall -g
 TARGET   = movie_recommender
-OBJS     = main.o Movie.o User.o Rating.o MovieManager.o UserManager.o
+OBJS     = main.o Movie.o User.o Rating.o MovieManager.o UserManager.o RatingManager.o
 
 $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
-main.o: main.cpp Movie.h User.h Rating.h MovieManager.h UserManager.h
+main.o: main.cpp Movie.h User.h Rating.h MovieManager.h UserManager.h RatingManager.h
 	$(CXX) $(CXXFLAGS) -c $<
 
 Movie.o: Movie.cpp Movie.h
@@ -22,6 +22,9 @@ MovieManager.o: MovieManager.cpp MovieManager.h Movie.h
 	$(CXX) $(CXXFLAGS) -c $<
 
 UserManager.o: UserManager.cpp UserManager.h User.h
+	$(CXX) $(CXXFLAGS) -c $<
+
+RatingManager.o: RatingManager.cpp RatingManager.h Rating.h
 	$(CXX) $(CXXFLAGS) -c $<
 
 .PHONY: clean run

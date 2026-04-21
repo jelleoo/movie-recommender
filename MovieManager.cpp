@@ -20,6 +20,15 @@ Movie* MovieManager::findByTitle(const std::string& title) {
     return nullptr;
 }
 
+Movie* MovieManager::findById(int id) {
+    for (Movie& m : movies) {
+        if (m.getId() == id) {
+            return &m;
+        }
+    }
+    return nullptr;
+}
+
 void MovieManager::sortByRating() {
     std::sort(movies.begin(), movies.end());
 }

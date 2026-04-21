@@ -2,6 +2,7 @@
 #include <string>
 #include "MovieManager.h"
 #include "UserManager.h"
+#include "RatingManager.h"
 
 void printMenu() {
     std::cout << "\n=== Movie Recommender ===" << std::endl;
@@ -22,6 +23,7 @@ void printMenu() {
 int main() {
     MovieManager movieMgr;
     UserManager userMgr;
+    RatingManager ratingMgr;
 
     int choice;
 
@@ -118,7 +120,100 @@ int main() {
             std::cout << "=== 사용자 목록 ===" << std::endl;
             userMgr.printAll();
         }
-        
+        else if (choice == 7) {
+            std::string userId;
+            int movieId;
+            double score;
+
+            if (userMgr.isEmpty()) {
+                std::cout << "먼저 사용자를 추가하세요." << std::endl;
+                continue;
+            }
+
+            if (movieMgr.isEmpty()) {
+                std::cout << "먼저 영화를 추가하세요." << std::endl;
+                continue;
+            }
+
+            std::cout << "사용자 ID: ";
+            std::getline(std::cin, userId);
+
+            User* foundUser = userMgr.findById(userId);
+            if (foundUser == nullptr) {
+                std::cout << "해당 ID의 사용자가 없습니다." << std::endl;
+                continue;
+            }
+
+            std::cout << "영화 ID: ";
+            std::cin >> movieId;
+
+            if (std::cin.fail()) {
+                std::cin.clear();
+                std::cin.ignore(1000, '\n');
+                std::cout << "숫자를 입력하세요." << std::endl;
+                continue;
+            }
+            std::cin.ignore(1000, '\n');
+
+            Movie* foundMovie = movieMgr.findById(movieId);
+            if (foundMovie == nullptr) {
+                std::cout << "해당 ID의 영화가 없습니다." << std::endl;
+                continue;
+            }
+
+            std::cout << "평점(0.0 ~ 5.0): ";
+            std::cin >> score;
+
+            if (std::cin.fail()) {
+                std::cin.clear();
+                std::cin.ignore(1000, '\n');
+                std::cout << "숫자를 입력하세요." << std::endl;
+                continue;
+            }
+            std::cin.ignore(1000, '\n');
+
+            Rating newRating(userId, movieId, score);
+
+            if (newRating.getScore() == -1.0) {
+                std::cout << "유효하지 않은 평점입니다." << std::endl;
+                continue;
+            }
+
+            ratingMgr.addRating(newRating);
+            foundMovie->addRating(newRating.getScore());
+            std::cout << "평점이 입력되었습니다." << std::endl;
+        }
+        else if (choice == 8) {
+            int movieId;
+
+            if (movieMgr.isEmpty()) {
+                std::cout << "등록된 영화가 없습니다." << std::endl;
+                continue;
+            }
+
+            std::cout << "영화 ID: ";
+            std::cin >> movieId;
+
+            if (std::cin.fail()) {
+                std::cin.clear();
+                std::cin.ignore(1000, '\n');
+                std::cout << "숫자를 입력하세요." << std::endl;
+                continue;
+            }
+            std::cin.ignore(1000, '\n');
+
+            Movie* foundMovie = movieMgr.findById(movieId);
+            if (foundMovie == nullptr) {
+                std::cout << "해당 ID의 영화가 없습니다." << std::endl;
+                continue;
+            }
+
+            std::cout << "=== " << foundMovie->getTitle() << " 평점 목록 ===" << std::endl;
+            ratingMgr.printRatingsByMovieId(movieId);
+        }
+        else {
+            std::cout << "잘못된 메뉴 번호입니다." << std::endl;
+        }
     }
 
     return 0;

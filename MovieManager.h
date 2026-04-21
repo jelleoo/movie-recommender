@@ -10,6 +10,7 @@ private:
 public:
     void addMovie(const Movie& movie);
     Movie* findByTitle(const std::string& title);
+    Movie* findById(int id);
     void sortByRating();
     void printAll() const;
     bool isEmpty() const;
