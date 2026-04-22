@@ -1,10 +1,12 @@
 #include "RatingManager.h"
 #include <iostream>
 
+// 평점 추가
 void RatingManager::addRating(const Rating& rating) {
     ratings.push_back(rating);
 }
 
+// 전체 평점 출력
 void RatingManager::printAll() const {
     if (ratings.empty()) {
         std::cout << "등록된 평점이 없습니다." << std::endl;
@@ -16,6 +18,7 @@ void RatingManager::printAll() const {
     }
 }
 
+// 특정 영화의 평점만 출력
 void RatingManager::printRatingsByMovieId(int movieId) const {
     bool found = false;
 
@@ -31,6 +34,7 @@ void RatingManager::printRatingsByMovieId(int movieId) const {
     }
 }
 
+// 비어 있는지 확인
 bool RatingManager::isEmpty() const {
     return ratings.empty();
 }
