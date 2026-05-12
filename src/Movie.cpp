@@ -60,12 +60,12 @@ bool Movie::operator<(const Movie& o) const {
 }
 
 // 출력 연산자 오버로딩
-// cout << movie 형태로 자연스럽게 출력하기 위해 사용
+// cout << movie 형태로 자연스럽게 출력하기 위해 사용 연쇄출력
 std::ostream& operator<<(std::ostream& os, const Movie& m) {
     os << m.id << ". " << m.title
        << " (" << m.releaseYear << ")"
        << " [" << m.genre << "]"
        << "  평점: " << m.getAverageRating()
        << " (" << m.ratingCount << "건)";
-    return os;
+    return os; 
 }

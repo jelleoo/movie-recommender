@@ -6,7 +6,7 @@
 // 영화 데이터를 관리하는 클래스
 class MovieManager {
 private:
-    std::vector<Movie> movies;   // 영화 목록을 private으로 보관
+    std::vector<Movie> movies;   // 핵심 데이터 영화 목록을 private으로 보관
 
 public:
     // 영화 추가
