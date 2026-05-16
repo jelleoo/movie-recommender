@@ -38,3 +38,16 @@ void RatingManager::printRatingsByMovieId(int movieId) const {
 bool RatingManager::isEmpty() const {
     return ratings.empty();
 }
+
+
+void RatingManager::loadFromFile(const std::string& filename) {
+    (void)filename; 
+}
+
+void RatingManager::saveToFile(const std::string& filename) const {
+    (void)filename; 
+}
+
+int RatingManager::size() const {
+    return (int)ratings.size();
+}

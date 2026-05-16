@@ -2,25 +2,21 @@
 #include <vector>
 #include <string>
 #include "User.h"
+#include "BaseManager.h"
 
-// 사용자 데이터를 관리하는 클래스
-class UserManager {
+class UserManager : public BaseManager {
 private:
-    std::vector<User> users;   // 사용자 목록을 private으로 관리
+    std::vector<User> users;
 
 public:
-    // 사용자 추가
     void addUser(const User& user);
-
-    // 이름으로 사용자 검색
     User* findByName(const std::string& name);
-
-    // ID로 사용자 검색
     User* findById(const std::string& id);
-
-    // 전체 사용자 출력
     void printAll() const;
-
-    // 비어 있는지 확인
     bool isEmpty() const;
+
+    // BaseManager에서 상속받은 순수 가상 함수 구현
+    void loadFromFile(const std::string& filename) override;
+    void saveToFile(const std::string& filename) const override;
+    int size() const override;
 };

@@ -34,15 +34,15 @@ src/Rating.o: src/Rating.cpp include/Rating.h
 	$(CXX) $(CXXFLAGS) -c src/Rating.cpp -o src/Rating.o
 
 # MovieManager.cpp 컴파일
-src/MovieManager.o: src/MovieManager.cpp include/MovieManager.h include/Movie.h
+src/MovieManager.o: src/MovieManager.cpp include/MovieManager.h include/Movie.h include/BaseManager.h
 	$(CXX) $(CXXFLAGS) -c src/MovieManager.cpp -o src/MovieManager.o
 
 # UserManager.cpp 컴파일
-src/UserManager.o: src/UserManager.cpp include/UserManager.h include/User.h
+src/UserManager.o: src/UserManager.cpp include/UserManager.h include/User.h include/BaseManager.h
 	$(CXX) $(CXXFLAGS) -c src/UserManager.cpp -o src/UserManager.o
 
 # RatingManager.cpp 컴파일
-src/RatingManager.o: src/RatingManager.cpp include/RatingManager.h include/Rating.h
+src/RatingManager.o: src/RatingManager.cpp include/RatingManager.h include/Rating.h include/BaseManager.h
 	$(CXX) $(CXXFLAGS) -c src/RatingManager.cpp -o src/RatingManager.o
 
 # clean, run은 실제 파일이 아니라 명령어 이름

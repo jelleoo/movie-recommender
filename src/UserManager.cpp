@@ -42,3 +42,15 @@ void UserManager::printAll() const {
 bool UserManager::isEmpty() const {
     return users.empty();
 }
+
+void UserManager::loadFromFile(const std::string& filename) {
+    (void)filename; // 아직 구현 전
+}
+
+void UserManager::saveToFile(const std::string& filename) const {
+    (void)filename; // 아직 구현 전
+}
+
+int UserManager::size() const {
+    return (int)users.size();
+}

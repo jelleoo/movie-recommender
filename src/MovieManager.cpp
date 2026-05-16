@@ -56,3 +56,15 @@ void MovieManager::printAll() const {
 bool MovieManager::isEmpty() const {
     return movies.empty();
 }
+
+void MovieManager::loadFromFile(const std::string& filename) {
+    (void)filename; // 아직 구현 전
+}
+
+void MovieManager::saveToFile(const std::string& filename) const {
+    (void)filename; // 아직 구현 전
+}
+
+int MovieManager::size() const {
+    return (int)movies.size();
+}
