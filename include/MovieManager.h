@@ -16,7 +16,6 @@ public:
     void printAll() const;
     bool isEmpty() const;
 
-    // BaseManager에서 상속받은 순수 가상 함수 구현
     void loadFromFile(const std::string& filename) override;
     void saveToFile(const std::string& filename) const override;
     int size() const override;
