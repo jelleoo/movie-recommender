@@ -4,7 +4,6 @@
 #include "UserManager.h"
 #include "RatingManager.h"
 
-// 메뉴 출력 함수
 void printMenu() {
     std::cout << "\n=== Movie Recommender ===" << std::endl;
     std::cout << "[ 영화 ]" << std::endl;
@@ -26,6 +25,19 @@ int main() {
     UserManager userMgr;
     RatingManager ratingMgr;
 
+    // 시작 시 CSV 로드
+    movieMgr.loadFromFile("data/movies.csv");
+    userMgr.loadFromFile("data/users.csv");
+    ratingMgr.loadFromFile("data/ratings.csv");
+
+    // 로드한 평점을 Movie 객체에 다시 반영
+    for (const Rating& r : ratingMgr.getRatings()) {
+        Movie* foundMovie = movieMgr.findById(r.getMovieId());
+        if (foundMovie != nullptr && r.getScore() != -1.0) {
+            foundMovie->addRating(r.getScore());
+        }
+    }
+
     int choice;
 
     while (true) {
@@ -33,7 +45,6 @@ int main() {
         std::cout << "선택 > ";
         std::cin >> choice;
 
-        // 메뉴 입력이 숫자가 아닐 때 처리
         if (std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore(1000, '\n');
@@ -43,12 +54,10 @@ int main() {
 
         std::cin.ignore(1000, '\n');
 
-        // 0이면 종료
         if (choice == 0) {
             std::cout << "프로그램을 종료합니다." << std::endl;
             break;
         }
-        // 1. 영화 추가
         else if (choice == 1) {
             int id, year;
             std::string title, genre;
@@ -84,7 +93,6 @@ int main() {
             movieMgr.addMovie(Movie(id, title, genre, year));
             std::cout << "영화가 추가되었습니다." << std::endl;
         }
-        // 2. 제목으로 검색
         else if (choice == 2) {
             std::string title;
             std::cout << "검색할 제목: ";
@@ -97,18 +105,15 @@ int main() {
                 std::cout << "해당 제목의 영화가 없습니다." << std::endl;
             }
         }
-        // 3. 전체 영화 목록 출력
         else if (choice == 3) {
             std::cout << "=== 영화 목록 ===" << std::endl;
             movieMgr.printAll();
         }
-        // 4. 평점순 정렬 후 출력
         else if (choice == 4) {
             movieMgr.sortByRating();
             std::cout << "=== 평점순 정렬 결과 ===" << std::endl;
             movieMgr.printAll();
         }
-        // 5. 사용자 추가
         else if (choice == 5) {
             std::string id, name, email;
 
@@ -124,18 +129,15 @@ int main() {
             userMgr.addUser(User(id, name, email));
             std::cout << "사용자가 추가되었습니다." << std::endl;
         }
-        // 6. 사용자 목록 출력
         else if (choice == 6) {
             std::cout << "=== 사용자 목록 ===" << std::endl;
             userMgr.printAll();
         }
-        // 7. 평점 입력
         else if (choice == 7) {
             std::string userId;
             int movieId;
             double score;
 
-            // 사용자나 영화가 하나도 없으면 평점 입력 불가
             if (userMgr.isEmpty()) {
                 std::cout << "먼저 사용자를 추가하세요." << std::endl;
                 continue;
@@ -185,7 +187,6 @@ int main() {
 
             Rating newRating(userId, movieId, score);
 
-            // Rating 생성자에서 잘못된 입력은 -1.0으로 처리
             if (newRating.getScore() == -1.0) {
                 std::cout << "유효하지 않은 평점입니다." << std::endl;
                 continue;
@@ -196,7 +197,6 @@ int main() {
 
             std::cout << "평점이 입력되었습니다." << std::endl;
         }
-        // 8. 특정 영화의 평점 목록 출력
         else if (choice == 8) {
             int movieId;
 
@@ -225,11 +225,15 @@ int main() {
             std::cout << "=== " << foundMovie->getTitle() << " 평점 목록 ===" << std::endl;
             ratingMgr.printRatingsByMovieId(movieId);
         }
-        // 잘못된 메뉴 번호 입력
         else {
             std::cout << "잘못된 메뉴 번호입니다." << std::endl;
         }
     }
+
+    // 종료 시 CSV 저장
+    movieMgr.saveToFile("data/movies.csv");
+    userMgr.saveToFile("data/users.csv");
+    ratingMgr.saveToFile("data/ratings.csv");
 
     return 0;
 }
