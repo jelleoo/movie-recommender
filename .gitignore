@@ -1,4 +1,19 @@
-obj/
+# 컴파일 결과물
 *.o
+*.a
+*.out
+
+# 오브젝트 파일 저장 폴더
+obj/
+
+# 실행 파일
 recommend
 movie_recommender
+
+# 에디터 / IDE 개인 설정
+.vscode/
+.idea/
+
+# 운영체제가 자동으로 만드는 파일
+.DS_Store
+Thumbs.db
