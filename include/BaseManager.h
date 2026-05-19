@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-// 세 Manager가 공통으로 가져야 하는 인터페이스를 강제하는 부모 클래스
+// 파일 입출력 함수와 size 함수를 강제하기 위한 부모 클래스
 class BaseManager {
 public:
     // CSV 파일 로드

@@ -4,8 +4,8 @@
 #include <fstream>
 #include <sstream>
 
-void MovieManager::addMovie(const Movie& movie) {
-    for (const Movie& m : movies) {
+void MovieManager::addMovie(const Movie& movie) {      // 같은 영화가 중복으로 추가되지 않도록 Movie::operator==를 사용
+    for (const Movie& m : movies) {                    // 아래의 m == movie 비교는 내부적으로 m.operator==(movie)를 호출
         if (m == movie) {
             return;
         }
@@ -30,7 +30,9 @@ Movie* MovieManager::findById(int id) {
     }
     return nullptr;
 }
-
+// movies 벡터 자체를 정렬
+// 함수 호출 후 saveToFile()을 하면 정렬된 순서가 CSV에도 저장
+// 정렬 결과를 유지하는 방식 선택
 void MovieManager::sortByRating() {
     std::sort(movies.begin(), movies.end());
 }
@@ -49,7 +51,8 @@ void MovieManager::printAll() const {
 bool MovieManager::isEmpty() const {
     return movies.empty();
 }
-
+// 현재 CSV 파싱은 ','를 구분자로 사용함.
+// 따라서 영화 제목이나 장르 안에 ','가 들어가는 경우는 고려하지 않음.
 void MovieManager::loadFromFile(const std::string& filename) {
     movies.clear();
 
@@ -84,7 +87,8 @@ void MovieManager::loadFromFile(const std::string& filename) {
 
     file.close();
 }
-
+// 현재 메모리에 저장된 movies 벡터를 CSV 파일로 다시 저장.
+// 프로그램 종료 시 최신 영화 목록이 data/movies.csv에 반영.
 void MovieManager::saveToFile(const std::string& filename) const {
     std::ofstream file(filename);
     if (!file.is_open()) {

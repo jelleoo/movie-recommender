@@ -249,6 +249,10 @@ int main() {
 
             ratingMgr.printRatingsByMovieId(movieId);
         }
+        // 9. 영화 추천 받기
+        // 사용자는 추천 받을 사용자 ID를 입력한다.
+        // 유사 사용자 수 k=3, 추천 영화 수 n=5는 프로그램 내부 기준으로 고정.
+
         else if (choice == 9) {
             std::string targetUserId;
 
@@ -259,7 +263,9 @@ int main() {
                 std::cout << "해당 ID의 사용자가 없습니다." << std::endl;
                 continue;
             }
-
+            // recommend(targetUserId, 3, 5)
+            // 3: 유사 사용자 상위 3명 사용
+            // 5: 추천 영화 최대 5개 반환
             std::vector<Movie> recommendations =
                 recommender.recommend(targetUserId, 3, 5);
 
@@ -269,7 +275,9 @@ int main() {
             }
 
             std::cout << "=== 추천 영화 목록 ===" << std::endl;
-
+            // 추천 결과에서는 영화 ID보다 추천 순위가 더 자연스러우므로
+            // operator<< 대신 getter를 사용해 순위와 영화 정보를 출력.
+            // 일반 영화 목록 출력에서는 여전히 operator<<를 사용함.    
             int rank = 1;
 
             for (const Movie& m : recommendations) {
