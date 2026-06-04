@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 
 void MovieManager::addMovie(const Movie& movie) {      // 같은 영화가 중복으로 추가되지 않도록 Movie::operator==를 사용
     for (const Movie& m : movies) {                    // 아래의 m == movie 비교는 내부적으로 m.operator==(movie)를 호출
@@ -58,31 +59,43 @@ void MovieManager::loadFromFile(const std::string& filename) {
 
     std::ifstream file(filename);
     if (!file.is_open()) {
-        std::cerr << "Error: " << filename << " 열 수 없습니다." << std::endl;
-        return;
+        throw std::runtime_error("영화 파일을 열 수 없습니다: " + filename);
     }
 
     std::string line;
+    int lineNum = 0;
+
     std::getline(file, line); // 헤더 스킵
+    lineNum++;
 
     while (std::getline(file, line)) {
-        if (line.empty()) continue;
+        lineNum++;
 
-        std::stringstream ss(line);
-        std::string token;
-        int id, year;
-        std::string title, genre;
+        if (line.empty()) {
+            continue;
+        }
 
-        std::getline(ss, token, ',');
-        id = std::stoi(token);
+        try {
+            std::stringstream ss(line);
+            std::string token;
+            int id, year;
+            std::string title, genre;
 
-        std::getline(ss, title, ',');
-        std::getline(ss, genre, ',');
+            std::getline(ss, token, ',');
+            id = std::stoi(token);
 
-        std::getline(ss, token, ',');
-        year = std::stoi(token);
+            std::getline(ss, title, ',');
+            std::getline(ss, genre, ',');
 
-        addMovie(Movie(id, title, genre, year));
+            std::getline(ss, token, ',');
+            year = std::stoi(token);
+
+            addMovie(Movie(id, title, genre, year));
+        }
+        catch (const std::exception& e) {
+            std::cerr << filename << " " << lineNum
+                      << "번 줄 건너뜀: " << e.what() << std::endl;
+        }
     }
 
     file.close();

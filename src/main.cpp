@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <exception>
 
 #include "MovieManager.h"
 #include "UserManager.h"
@@ -35,9 +36,26 @@ int main() {
     UserManager userMgr;
     RatingManager ratingMgr;
 
+try {
     movieMgr.loadFromFile("data/movies.csv");
+}
+catch (const std::exception& e) {
+    std::cerr << "영화 데이터 로드 오류: " << e.what() << std::endl;
+}
+
+try {
     userMgr.loadFromFile("data/users.csv");
+}
+catch (const std::exception& e) {
+    std::cerr << "사용자 데이터 로드 오류: " << e.what() << std::endl;
+}
+
+try {
     ratingMgr.loadFromFile("data/ratings.csv");
+}
+catch (const std::exception& e) {
+    std::cerr << "평점 데이터 로드 오류: " << e.what() << std::endl;
+}
 
     for (const Rating& r : ratingMgr.getRatings()) {
         Movie* foundMovie = movieMgr.findById(r.getMovieId());

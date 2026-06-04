@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 
 void UserManager::addUser(const User& user) {
     users.push_back(user);
@@ -45,24 +46,40 @@ void UserManager::loadFromFile(const std::string& filename) {
 
     std::ifstream file(filename);
     if (!file.is_open()) {
-        std::cerr << "Error: " << filename << " 열 수 없습니다." << std::endl;
-        return;
+        throw std::runtime_error("사용자 파일을 열 수 없습니다: " + filename);
     }
 
-    std::string line;
+    std::string line; 
+    int lineNum = 0;
+
     std::getline(file, line); // 헤더 스킵
+    lineNum++;
 
     while (std::getline(file, line)) {
-        if (line.empty()) continue;
+        lineNum++;
 
-        std::stringstream ss(line);
-        std::string id, name, email;
+        if (line.empty()) {
+            continue;
+        }
 
-        std::getline(ss, id, ',');
-        std::getline(ss, name, ',');
-        std::getline(ss, email, ',');
+        try {
+            std::stringstream ss(line);
+            std::string id, name, email;
 
-        addUser(User(id, name, email));
+            std::getline(ss, id, ',');
+            std::getline(ss, name, ',');
+            std::getline(ss, email, ',');
+
+            if (id.empty() || name.empty()) {
+                throw std::invalid_argument("사용자 ID 또는 이름이 비어 있습니다.");
+            }
+
+            addUser(User(id, name, email));
+        }
+        catch (const std::exception& e) {
+            std::cerr << filename << " " << lineNum
+                      << "번 줄 건너뜀: " << e.what() << std::endl;
+        }
     }
 
     file.close();
