@@ -5,6 +5,8 @@
 #include <set>
 #include <map>
 
+constexpr double MIN_LIKED_SCORE = 4.0;
+
 
 // movieMgr와 ratingMgr는 참조 멤버이므로 생성자 초기화 리스트에서 초기화해야 한다.
 // 추천 기능은 기존 Manager들의 데이터를 사용하기만 하므로 복사하지 않고 참조로 연결했다.
@@ -115,7 +117,7 @@ std::vector<Movie> Recommender::recommend(
             // 유사 사용자가 높게 평가한 영화만 추천 후보로 사용한다.
             // 여기서는 4.0 이상을 "좋아한 영화"의 기준으로 정했다.
             // 또한 내가 이미 본 영화는 추천 후보에서 제외한다.
-            if (score >= 4.0 && watchedMovieIds.find(movieId) == watchedMovieIds.end()) {
+            if (score >= MIN_LIKED_SCORE && watchedMovieIds.find(movieId) == watchedMovieIds.end()) {
                 weightedSum[movieId] += sim * score;
                 weightSum[movieId] += sim;
             }
@@ -212,7 +214,7 @@ std::vector<Movie> Recommender::recommendByGenre(
 
             if (movie != nullptr &&
                 movie->getGenre() == genre &&
-                score >= 4.0 &&
+                score >= MIN_LIKED_SCORE &&
                 watchedMovieIds.find(movieId) == watchedMovieIds.end()) {
 
                 weightedSum[movieId] += sim * score;

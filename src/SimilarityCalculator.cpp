@@ -1,5 +1,7 @@
 #include "SimilarityCalculator.h"
-#include <cmath>   // score가 double이므로 double용 std::abs 사용
+#include <cmath>
+
+constexpr double NO_COMMON_MOVIE_SCORE = -100.0;
 
 // 두 사용자의 평점 목록을 비교하여 유사도를 계산한다.
 // 공식: commonCount * 10 - scoreDiffSum
@@ -19,7 +21,7 @@ double SimilarityCalculator::calculate(const std::vector<Rating>& user1,
     }
 // 공통 영화가 없으면 비교할 근거가 없으므로 -100 반환
     if (commonCount == 0) {
-        return -100.0;
+        return NO_COMMON_MOVIE_SCORE;
     }
 
     return commonCount * 10 - scoreDiffSum;

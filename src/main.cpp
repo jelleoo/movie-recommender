@@ -8,6 +8,10 @@
 #include "RatingManager.h"
 #include "Recommender.h"
 
+constexpr int INPUT_IGNORE_LIMIT = 1000;
+constexpr int DEFAULT_SIMILAR_USER_COUNT = 3;
+constexpr int DEFAULT_RECOMMEND_COUNT = 5;
+
 void printMenu() {
     std::cout << "\n=== Movie Recommender ===" << std::endl;
 
@@ -30,6 +34,19 @@ void printMenu() {
     std::cout << "10. 장르별 영화 추천 받기" << std::endl;
 
     std::cout << "0. 종료" << std::endl;
+}
+
+void printRecommendationList(const std::vector<Movie>& recommendations) {
+    int rank = 1;
+
+    for (const Movie& m : recommendations) {
+        std::cout << rank << ". " << m.getTitle()
+                  << " (" << m.getReleaseYear() << ")"
+                  << " [" << m.getGenre() << "]"
+                  << std::endl;
+
+        rank++;
+    }
 }
 
 int main() {
@@ -77,12 +94,12 @@ int main() {
 
         if (std::cin.fail()) {
             std::cin.clear();
-            std::cin.ignore(1000, '\n');
+            std::cin.ignore(INPUT_IGNORE_LIMIT, '\n');
             std::cout << "숫자를 입력하세요." << std::endl;
             continue;
         }
 
-        std::cin.ignore(1000, '\n');
+        std::cin.ignore(INPUT_IGNORE_LIMIT, '\n');
 
         if (choice == 0) {
             std::cout << "프로그램을 종료합니다." << std::endl;
@@ -97,12 +114,12 @@ int main() {
 
             if (std::cin.fail()) {
                 std::cin.clear();
-                std::cin.ignore(1000, '\n');
+                std::cin.ignore(INPUT_IGNORE_LIMIT, '\n');
                 std::cout << "숫자를 입력하세요." << std::endl;
                 continue;
             }
 
-            std::cin.ignore(1000, '\n');
+            std::cin.ignore(INPUT_IGNORE_LIMIT, '\n');
 
             std::cout << "제목: ";
             std::getline(std::cin, title);
@@ -115,12 +132,12 @@ int main() {
 
             if (std::cin.fail()) {
                 std::cin.clear();
-                std::cin.ignore(1000, '\n');
+                std::cin.ignore(INPUT_IGNORE_LIMIT, '\n');
                 std::cout << "숫자를 입력하세요." << std::endl;
                 continue;
             }
 
-            std::cin.ignore(1000, '\n');
+            std::cin.ignore(INPUT_IGNORE_LIMIT, '\n');
 
             movieMgr.addMovie(Movie(id, title, genre, year));
             std::cout << "영화가 추가되었습니다." << std::endl;
@@ -198,12 +215,12 @@ int main() {
 
             if (std::cin.fail()) {
                 std::cin.clear();
-                std::cin.ignore(1000, '\n');
+                std::cin.ignore(INPUT_IGNORE_LIMIT, '\n');
                 std::cout << "숫자를 입력하세요." << std::endl;
                 continue;
             }
 
-            std::cin.ignore(1000, '\n');
+            std::cin.ignore(INPUT_IGNORE_LIMIT, '\n');
 
             Movie* foundMovie = movieMgr.findById(movieId);
 
@@ -217,12 +234,12 @@ int main() {
 
             if (std::cin.fail()) {
                 std::cin.clear();
-                std::cin.ignore(1000, '\n');
+                std::cin.ignore(INPUT_IGNORE_LIMIT, '\n');
                 std::cout << "숫자를 입력하세요." << std::endl;
                 continue;
             }
 
-            std::cin.ignore(1000, '\n');
+            std::cin.ignore(INPUT_IGNORE_LIMIT, '\n');
 
             Rating newRating(userId, movieId, score);
 
@@ -249,12 +266,12 @@ int main() {
 
             if (std::cin.fail()) {
                 std::cin.clear();
-                std::cin.ignore(1000, '\n');
+                std::cin.ignore(INPUT_IGNORE_LIMIT, '\n');
                 std::cout << "숫자를 입력하세요." << std::endl;
                 continue;
             }
 
-            std::cin.ignore(1000, '\n');
+            std::cin.ignore(INPUT_IGNORE_LIMIT, '\n');
 
             Movie* foundMovie = movieMgr.findById(movieId);
 
@@ -280,7 +297,11 @@ int main() {
             }
 
             std::vector<Movie> recommendations =
-                recommender.recommend(targetUserId, 3, 5);
+                recommender.recommend(
+                    targetUserId,
+                    DEFAULT_SIMILAR_USER_COUNT,
+                    DEFAULT_RECOMMEND_COUNT
+                );
 
             if (recommendations.empty()) {
                 std::cout << "추천할 영화가 없습니다." << std::endl;
@@ -289,18 +310,7 @@ int main() {
 
             std::cout << "=== 추천 영화 목록 ===" << std::endl;
 
-            int rank = 1;
-
-            for (const Movie& m : recommendations) {
-                std::cout << rank << ". " << m.getTitle()
-                          << " (" << m.getReleaseYear() << ")"
-                          << " [" << m.getGenre() << "]"
-                          << "  평점: " << m.getAverageRating()
-                          << " (" << m.getRatingCount() << "건)"
-                          << std::endl;
-
-                rank++;
-            }
+            printRecommendationList(recommendations);
         }
         else if (choice == 10) {
             std::string targetUserId;
@@ -345,7 +355,12 @@ int main() {
             }
 
             std::vector<Movie> recommendations =
-                recommender.recommendByGenre(targetUserId, genre, 3, 5);
+                recommender.recommendByGenre(
+                    targetUserId,
+                    genre,
+                    DEFAULT_SIMILAR_USER_COUNT,
+                    DEFAULT_RECOMMEND_COUNT
+                );
 
             if (recommendations.empty()) {
                 std::cout << "해당 장르에서 추천할 영화가 없습니다." << std::endl;
@@ -354,16 +369,7 @@ int main() {
 
             std::cout << "=== " << genre << " 장르 추천 영화 목록 ===" << std::endl;
 
-            int rank = 1;
-
-            for (const Movie& m : recommendations) {
-                std::cout << rank << ". " << m.getTitle()
-                          << " (" << m.getReleaseYear() << ")"
-                          << " [" << m.getGenre() << "]"
-                          << std::endl;
-
-                rank++;
-            }
+            printRecommendationList(recommendations);
         }
         else {
             std::cout << "잘못된 메뉴 번호입니다." << std::endl;
