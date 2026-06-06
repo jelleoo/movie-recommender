@@ -1,4 +1,5 @@
 #include "MovieManager.h"
+#include "Timer.h"
 #include <algorithm>
 #include <iostream>
 #include <fstream>
@@ -35,6 +36,8 @@ Movie* MovieManager::findById(int id) {
 // 특정 장르의 영화만 골라 반환한다.
 // movies 벡터를 수정하지 않으므로 const 함수로 구현했다.
 std::vector<Movie> MovieManager::filterByGenre(const std::string& genre) const {
+    Timer t("filterByGenre");
+    
     std::vector<Movie> result;
 
     for (const Movie& movie : movies) {

@@ -1,8 +1,10 @@
 #include "Recommender.h"
 #include "SimilarityCalculator.h"
+#include "Timer.h"
 #include <algorithm>
 #include <set>
 #include <map>
+
 
 // movieMgr와 ratingMgr는 참조 멤버이므로 생성자 초기화 리스트에서 초기화해야 한다.
 // 추천 기능은 기존 Manager들의 데이터를 사용하기만 하므로 복사하지 않고 참조로 연결했다.
@@ -66,6 +68,7 @@ std::vector<std::pair<std::string, double>> Recommender::findSimilarUsers(
 // 5. 가중 평균으로 추천 점수를 계산하고 내림차순 정렬 후 n개 반환한다.
 std::vector<Movie> Recommender::recommend(
     const std::string& targetUserId, int k, int n) const {
+    Timer t("recommend");
 
     std::vector<Movie> result;
     std::vector<Rating> myRatings = ratingMgr.findByUser(targetUserId);
@@ -169,6 +172,8 @@ std::vector<Movie> Recommender::recommendByGenre(
     const std::string& genre,
     int k,
     int n) const {
+
+    Timer t("recommendByGenre");
 
     std::vector<Movie> result;
     std::vector<Rating> myRatings = ratingMgr.findByUser(targetUserId);
