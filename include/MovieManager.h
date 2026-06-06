@@ -12,6 +12,10 @@ public:
     void addMovie(const Movie& movie);
     Movie* findByTitle(const std::string& title);
     Movie* findById(int id);
+
+    std::vector<Movie> filterByGenre(const std::string& genre) const;
+    std::vector<std::string> getGenres() const;
+
     void sortByRating();
     void printAll() const;
     bool isEmpty() const;
